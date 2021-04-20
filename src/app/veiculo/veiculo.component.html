@@ -1,0 +1,21 @@
+<div *ngIf="veiculo">
+  <div style='text-align:center;'>
+    <img src="{{veiculo.foto}}" style="max-width: 350px" alt="">
+  </div>
+  <h6>{{veiculo.nome}}</h6>
+  <p>R$ {{veiculo.valor}} </p>
+  <div class='veiculosDetalhes'>
+    <div class='detalhe'>
+      <p style='font-weight: bold;'>Cor</p>
+      <p>{{veiculo.cor}}</p>
+    </div>
+    <div class='detalhe'>
+      <p style='font-weight: bold;'>Qnt de Passageiros</p>
+      <p>{{veiculo.qnt_passageiros}}</p>
+    </div>
+    <div class='detalhe'>
+      <p style='font-weight: bold;'>Marca</p>
+      <p>{{veiculo.marca.nome}}</p>
+    </div>
+  </div>
+</div>

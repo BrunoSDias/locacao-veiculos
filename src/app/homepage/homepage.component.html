@@ -1,1 +1,7 @@
-<p>homepage works!</p>
+<div class="container">
+  <ul class="collection with-header">
+    <li *ngFor="let veiculo of veiculos" class="collection-item">
+      <app-veiculo [veiculo]="veiculo"></app-veiculo>
+    </li>
+  </ul>
+</div>

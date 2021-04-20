@@ -1,0 +1,10 @@
+.veiculosDetalhes {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  border: 1px solid #ccc;
+
+  .detalhe {
+    display: inline-block;
+  }
+}

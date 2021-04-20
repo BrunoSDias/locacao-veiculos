@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 
 export class Usuario {
   constructor(public http: HttpClient) {}
-
+  public id: number;
   public nome: string;
   public cpf: string;
   public endereco: string;
@@ -19,7 +19,7 @@ export class Usuario {
 
   async fazerLogin() {
     try {
-      return await this.http.post(`${environment.apiUrl}/login_api.json`, this);
+      return await this.http.post<any>(`${environment.apiUrl}/login.json`, {usuario: this}).toPromise();
     } catch (err) {
       console.log(err, "ERRO AO FAZER REQUISIÇÃO VIA ANGULAR")
     }
