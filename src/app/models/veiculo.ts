@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import Sessao from '../services/sessao';
 import { Marca } from './marca';
 
 export class Veiculo {
@@ -13,6 +14,10 @@ export class Veiculo {
   public marca: Marca;
 
   static async todos(http: HttpClient) {
-    return await http.get<Veiculo[]>(`${environment.apiUrl}/veiculos.json`).toPromise();
+    return await http.get<Veiculo[]>(`${environment.apiUrl}/veiculos_usuarios.json`, {
+      headers: new HttpHeaders({
+        UsuarioToken: Sessao.getUsuario(),
+      })
+    }).toPromise();
   }
 }
