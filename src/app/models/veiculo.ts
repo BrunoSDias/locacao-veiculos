@@ -14,10 +14,6 @@ export class Veiculo {
   public marca: Marca;
 
   static async todos(http: HttpClient) {
-    return await http.get<Veiculo[]>(`${environment.apiUrl}/veiculos_usuarios.json`, {
-      headers: new HttpHeaders({
-        UsuarioToken: Sessao.getUsuario(),
-      })
-    }).toPromise();
+    return await http.get<Veiculo[]>(`${environment.apiUrl}/veiculos_usuarios.json`).toPromise();
   }
 }

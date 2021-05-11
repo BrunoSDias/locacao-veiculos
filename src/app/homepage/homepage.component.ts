@@ -16,11 +16,6 @@ export class HomepageComponent implements OnInit {
   constructor(private router: Router, public http: HttpClient) { }
 
   ngOnInit(): void {
-    const usuarioId = Sessao.getUsuario();
-    if (!usuarioId) {
-      this.router.navigateByUrl('/login');
-      return
-    }
     this.loadVeiculos();
   }
 

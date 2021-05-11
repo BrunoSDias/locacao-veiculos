@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="container" style='max-width: 650px;'>
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="nome" type="text" class="validate" [(ngModel)]="usuario.nome">
+          <label for="nome">Nome</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="data_nascimento" type="date" class="validate" [(ngModel)]="usuario.data_nascimento">
+          <label for="data_nascimento">Data de Nascimento</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="cpf" type="text" class="validate" name="usuario.cpf" mask="000.000.000-00" [(ngModel)]="usuario.cpf">
+          <label for="cpf">CPF</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="endereco" type="text" class="validate" [(ngModel)]="usuario.endereco">
+          <label for="endereco">Endereço</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="numero" type="text" class="validate" [(ngModel)]="usuario.numero">
+          <label for="numero">Número</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="bairro" type="text" class="validate" [(ngModel)]="usuario.bairro">
+          <label for="bairro">Bairro</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="cidade" type="text" class="validate" [(ngModel)]="usuario.cidade">
+          <label for="cidade">Cidade</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="complemento" type="text" class="validate" [(ngModel)]="usuario.complemento">
+          <label for="complemento">Complemento</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="estado" type="text" class="validate" [(ngModel)]="usuario.estado">
+          <label for="estado">Estado</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="login" type="email" class="validate" [(ngModel)]="usuario.login">
+          <label for="login">Login</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="senha" type="password" class="validate" [(ngModel)]="usuario.senha">
+          <label for="senha">Senha</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <button class="btn waves-effect green lighten-1" type="submit" name="action" (click)="salvar()">Salvar
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .row {
+    margin-bottom: 0;
+  }
+</style>

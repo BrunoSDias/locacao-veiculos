@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Veiculo } from '../models/veiculo';
+import { Router } from '@angular/router'
+import { PedidoService } from '../services/pedido.service';
+import Sessao from '../services/sessao';
 
 @Component({
   selector: 'app-veiculo',
@@ -11,9 +14,15 @@ export class VeiculoComponent implements OnInit {
   @Input()
   veiculo: Veiculo;
 
-  constructor() { }
+  constructor(private router: Router, private pedidoService: PedidoService) { }
 
   ngOnInit(): void {
+  }
+
+  goToCheckout() {
+    Sessao.setVeiculo(this.veiculo);
+    this.pedidoService.selecionaVeiculo(this.veiculo);
+    this.router.navigateByUrl('/checkout');
   }
 
 }

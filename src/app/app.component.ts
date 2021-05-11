@@ -9,12 +9,12 @@ import Sessao from './services/sessao';
 })
 export class AppComponent implements OnInit{
   title = 'locacao-veiculos';
-  usuarioId: number;
+  usuarioId: string;
 
   constructor(private router: Router){}
 
   ngOnInit() {
-    this.usuarioId = +Sessao.getUsuario();
+    this.usuarioId = Sessao.getUsuario();
   }
 
   logOut() {

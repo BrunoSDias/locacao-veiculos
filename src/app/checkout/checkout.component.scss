@@ -1,0 +1,29 @@
+.detalhes {
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+}
+
+.infoAluguel {
+  color: green;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.alignHorizontal {
+  display: block;
+}
+
+.alignHorizontal dt{
+  float: left;
+  width: 160px;
+  clear: left;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alignHorizontal dd{
+  margin-left: 180px;
+}

@@ -24,4 +24,12 @@ export class Usuario {
       console.log(err, "ERRO AO FAZER REQUISIÇÃO VIA ANGULAR")
     }
   }
+
+  async cadastrar() {
+    try {
+      return await this.http.post<Usuario>(`${environment.apiUrl}/usuarios.json`, {usuario: this}).toPromise();
+    } catch(err) {
+      console.log(err, "ERRO AO TENTAR CRIAR NOVO USUÁRIO")
+    }
+  }
 }
