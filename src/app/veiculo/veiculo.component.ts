@@ -20,7 +20,6 @@ export class VeiculoComponent implements OnInit {
   }
 
   goToCheckout() {
-    Sessao.setVeiculo(this.veiculo);
     this.pedidoService.selecionaVeiculo(this.veiculo);
     this.router.navigateByUrl('/checkout');
   }

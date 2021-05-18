@@ -55,22 +55,45 @@
       </h5>
       <dl class='alignHorizontal'>
         <dt>Valor/Dia</dt>
-        <dd>R$ 50,00</dd>
+        <dd>R$ {{this.veiculo.valor}}</dd>
         <dt>Qnt Dias</dt>
         <dd>
-          <select class="browser-default" style='max-width: 170px; font-size: 0.8em; height: 2.5rem;'>
-            <option value="" disabled selected>Choose your option</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
+          <select class="browser-default" style='max-width: 170px; font-size: 0.8em; height: 2.5rem;'[(ngModel)]="dias" (change)=previewTotal()>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
           </select>
         </dd>
         <dt>Valor Total</dt>
-        <dd>R$ 50,00</dd>
+        <dd>R$ {{total}}</dd>
       </dl>
-      <button class="btn waves-effect waves-light" type="submit" name="action" style='margin: auto; margin-top: 20px;'>Submit
+      <button class="btn waves-effect waves-light" type="submit" name="action" style='margin: auto; margin-top: 20px;' (click)="finalizar()">Alugar
         <i class="material-icons right">task_alt</i>
       </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="row" style="max-width: 500px; margin: auto;">
+      <div class="input-field col s12">
+        <input id="numero_cartao" type="text" class="validate" [(ngModel)]="numero_cartao" mask="0000.0000.0000.0000">
+        <label for="numero_cartao">Número do cartão</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="nome_cartao" type="text" [(ngModel)]="nome_cartao" class="validate">
+        <label for="nome_cartao">Nome no Cartão</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="data_validade" type="date" [(ngModel)]="data_validade" class="validate">
+        <label for="data_validade">Data de Validade</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="cvv" type="text" class="validate" [(ngModel)]="cvv" mask="000">
+        <label for="cvv">CVV</label>
+      </div>
     </div>
   </div>
 </div>

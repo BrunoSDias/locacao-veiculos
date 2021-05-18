@@ -15,17 +15,6 @@ class Sessao {
   public static clearUsuario(): void {
     localStorage.removeItem("usuario");
   }
-
-  public static setVeiculo(veiculo: Veiculo): void {
-    localStorage.setItem("veiculo", JSON.stringify(veiculo))
-  }
-
-  public static getVeiculo(): Veiculo {
-    const veiculo = localStorage.getItem("veiculo")
-    if (veiculo) {
-      return JSON.parse(veiculo) as Veiculo
-    }
-  }
 }
 
 export default Sessao;

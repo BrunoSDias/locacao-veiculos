@@ -16,4 +16,10 @@ export class Veiculo {
   static async todos(http: HttpClient) {
     return await http.get<Veiculo[]>(`${environment.apiUrl}/veiculos_usuarios.json`).toPromise();
   }
+
+  static async getSession(http: HttpClient) {
+    const response = await http.get<{sessionId: ''}>(`${environment.apiUrl}/get_session`).toPromise();
+    console.log(response);
+    return response;
+  }
 }
