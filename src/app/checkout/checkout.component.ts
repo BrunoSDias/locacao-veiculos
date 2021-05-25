@@ -35,7 +35,6 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    PagSeguroDirectPayment.setSessionId('');
     this.recebeVeiculo();
   }
 
@@ -50,6 +49,7 @@ export class CheckoutComponent implements OnInit {
           this.veiculo = v as Veiculo
           (async() => {
             this.sessionId = (await Veiculo.getSession(this.http)).sessionId;
+            PagSeguroDirectPayment.setSessionId(this.sessionId);
           })()
           this.total = parseFloat(this.veiculo.valor)
           return
@@ -77,17 +77,23 @@ export class CheckoutComponent implements OnInit {
       alert('Por favor, preencha o cvv do seu cartão')
     }
 
+    const ano_expiracao = this.data_validade.split('-')[0]
+    const mes_expiracao = this.data_validade.split('-')[1]
+
     const dadosPagamento = {
-      numero_cartao: this.numero_cartao,
+      numero_cartao: this.numero_cartao.replace(/\./g, ''),
       nome_cartao: this.nome_cartao,
       data_validade: this.data_validade,
       cvv: this.cvv,
       sessao_id: this.sessionId,
-      total: this.total
+      total: this.total,
+      ano_expiracao,
+      mes_expiracao,
+      dias: this.dias,
+      veiculoId: this.veiculo.id,
     }
 
     this.alugarService.preencheDadosCheckout(dadosPagamento as IDadosPagamento)
-
   }
 
 }

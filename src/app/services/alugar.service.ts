@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { IDadosPagamento } from '../static/interfaces';
+import { Reserva } from '../models/reserva';
+import { HttpClient } from '@angular/common/http';
 
 declare const PagSeguroDirectPayment;
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,16 @@ declare const PagSeguroDirectPayment;
 export class AlugarService {
   private dadosPagamento$ = new BehaviorSubject({} as IDadosPagamento);
   private dados: IDadosPagamento;
+  senderHash: string;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.receberDadosCheckout()
     .subscribe(
       d => {
-        this.dados = d as IDadosPagamento;
-        this.metodosPagamento();
+        if(d && Object.entries(d).length) {
+          this.dados = d as IDadosPagamento;
+          this.metodosPagamento();
+        }
       }
 
     )
@@ -38,40 +41,42 @@ export class AlugarService {
 
   metodosPagamento() {
     PagSeguroDirectPayment.getPaymentMethods({
-      amount: 500.00,
-      success: function(response) {
+      amount: this.dados.total,
+      success: (response) => {
         this.hashPagamento()
       },
-      error: function(response) {
+      error: (response) => {
 
       },
-      complete: function(response) {
+      complete: (response) => {
 
       }
     });
   }
 
   hashPagamento() {
-    PagSeguroDirectPayment.onSenderHashReady(function(response){
+    PagSeguroDirectPayment.onSenderHashReady((response) => {
       if(response.status == 'error') {
           console.log(response.message);
           return false;
       }
-      var hash = response.senderHash; //Hash estará disponível nesta variável.
+      this.senderHash = response.senderHash; //Hash estará disponível nesta variável.
       this.bandeira();
     });
   }
 
   bandeira() {
+    const bin = this.dados.numero_cartao.substring(0, 6)
     PagSeguroDirectPayment.getBrand({
-      cardBin: 411111,
-      success: function(response) {
+      cardBin: bin,
+      success: (response) => {
+        this.dados.bandeira = response.brand.name;
         this.parcelamento();
       },
-      error: function(response) {
+      error: (response) => {
         //tratamento do erro
       },
-      complete: function(response) {
+      complete: (response) => {
         //tratamento comum para todas chamadas
       }
     });
@@ -79,16 +84,16 @@ export class AlugarService {
 
   parcelamento() {
     PagSeguroDirectPayment.getInstallments({
-      amount: 118.80,
-      maxInstallmentNoInterest: 2,
-      brand: 'visa',
-      success: function(response){
+      amount: this.dados.total,
+      maxInstallmentNoInterest: 12,
+      brand: this.dados.bandeira,
+      success: (response) => {
         this.tokenCartao();
       },
-        error: function(response) {
+        error: (response) => {
             // callback para chamadas que falharam.
       },
-        complete: function(response){
+        complete: (response) => {
             // Callback para todas chamadas.
       }
     });
@@ -96,18 +101,21 @@ export class AlugarService {
 
   tokenCartao() {
     PagSeguroDirectPayment.createCardToken({
-      cardNumber: '4111111111111111', // Número do cartão de crédito
-      brand: 'visa', // Bandeira do cartão
-      cvv: '013', // CVV do cartão
-      expirationMonth: '12', // Mês da expiração do cartão
-      expirationYear: '2026', // Ano da expiração do cartão, é necessário os 4 dígitos.
-      success: function(response) {
-           // Retorna o cartão tokenizado.
+      cardNumber: this.dados.numero_cartao, // Número do cartão de crédito
+      brand: this.dados.bandeira, // Bandeira do cartão
+      cvv: this.dados.cvv, // CVV do cartão
+      expirationMonth: this.dados.mes_expiracao, // Mês da sexpiração do cartão
+      expirationYear: this.dados.ano_expiracao, // Ano da expiração do cartão, é necessário os 4 dígitos.
+      success: (response) => {
+        Reserva.alugar(this.http, this.dados.veiculoId, this.dados.dias, response.card.token, this.senderHash).then(res => {
+        debugger;
+          // res.reserva_id
+        })
       },
-      error: function(response) {
+      error: () => {
                // Callback para chamadas que falharam.
       },
-      complete: function(response) {
+      complete: (response) => {
            // Callback para todas chamadas.
       }
     });
