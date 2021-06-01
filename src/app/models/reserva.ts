@@ -14,7 +14,7 @@ export class Reserva {
   public usuario_id: number;
 
   static async alugar(http: HttpClient, veiculoId: number, dias: number, token: string, senderHash: string) {
-    return await http.post<{reserva_id: number}>(`${environment.apiUrl}/alugar/${veiculoId}.json`, {
+    return await http.post<Reserva>(`${environment.apiUrl}/alugar/${veiculoId}.json`, {
       dias,
       token,
       senderHash,

@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { VeiculoComponent } from './veiculo/veiculo.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { ConfirmacaoPagamentoComponent } from './confirmacao-pagamento/confirmacao-pagamento.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CheckoutComponent } from './checkout/checkout.component';
     LoginComponent,
     VeiculoComponent,
     CadastroComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    ConfirmacaoPagamentoComponent
   ],
   imports: [
     BrowserModule,

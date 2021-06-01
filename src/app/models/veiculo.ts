@@ -11,6 +11,7 @@ export class Veiculo {
   public qnt_passageiros: number;
   public placa: string;
   public valor: string;
+  public foto: string;
   public marca: Marca;
 
   static async todos(http: HttpClient) {

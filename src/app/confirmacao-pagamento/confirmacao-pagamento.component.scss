@@ -1,0 +1,32 @@
+
+  .pagamentoContainer {
+    background-color: #ccc;
+    padding: 15px;
+    min-height: 250px;
+  }
+
+  .ofertasInfo {
+    padding-left: 5%;
+  }
+
+  .ofertasInfo p, .ofertasInfo h4{
+    color: green;
+  }
+  .itemLista {
+    margin-top: 8px;
+    background-color: #ccc;
+    padding: 15px;
+    min-height: 250px;
+  }
+
+  .detalhesContainer {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    border-bottom: 1px solid #fff;
+  }
+
+  .detalhesContainer .card-text {
+    font-weight: bold;
+    font-size: 1.1em;
+  }

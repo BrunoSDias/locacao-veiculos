@@ -21,6 +21,7 @@ export class VeiculoComponent implements OnInit {
 
   goToCheckout() {
     this.pedidoService.selecionaVeiculo(this.veiculo);
+    Sessao.setVeiculo(this.veiculo);
     this.router.navigateByUrl('/checkout');
   }
 

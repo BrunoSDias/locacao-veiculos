@@ -6,7 +6,6 @@ import { tap, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AlugarService } from '../services/alugar.service';
 import { IDadosPagamento } from '../static/interfaces';
-import { Subscription } from 'rxjs';
 import Sessao from '../services/sessao';
 
 declare const PagSeguroDirectPayment

@@ -3,6 +3,9 @@ import { BehaviorSubject } from 'rxjs';
 import { IDadosPagamento } from '../static/interfaces';
 import { Reserva } from '../models/reserva';
 import { HttpClient } from '@angular/common/http';
+import { ReservaService } from './reserva.service';
+import Sessao from './sessao';
+import { Router } from '@angular/router';
 
 declare const PagSeguroDirectPayment;
 
@@ -14,7 +17,7 @@ export class AlugarService {
   private dados: IDadosPagamento;
   senderHash: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router, private reservaService: ReservaService) {
     this.receberDadosCheckout()
     .subscribe(
       d => {
@@ -46,6 +49,7 @@ export class AlugarService {
         this.hashPagamento()
       },
       error: (response) => {
+        console.log("ERRO: ", response)
 
       },
       complete: (response) => {
@@ -74,6 +78,7 @@ export class AlugarService {
         this.parcelamento();
       },
       error: (response) => {
+        console.log("ERRO: ", response)
         //tratamento do erro
       },
       complete: (response) => {
@@ -91,6 +96,7 @@ export class AlugarService {
         this.tokenCartao();
       },
         error: (response) => {
+          console.log("ERRO: ", response)
             // callback para chamadas que falharam.
       },
         complete: (response) => {
@@ -108,11 +114,13 @@ export class AlugarService {
       expirationYear: this.dados.ano_expiracao, // Ano da expiração do cartão, é necessário os 4 dígitos.
       success: (response) => {
         Reserva.alugar(this.http, this.dados.veiculoId, this.dados.dias, response.card.token, this.senderHash).then(res => {
-        debugger;
-          // res.reserva_id
+          // this.reservaService.addReserva(res as Reserva);
+          Sessao.setReserva(res as Reserva);
+          this.router.navigateByUrl("/confirmacao_pagamento")
         })
       },
-      error: () => {
+      error: (response) => {
+        console.log("ERRO: ", response)
                // Callback para chamadas que falharam.
       },
       complete: (response) => {

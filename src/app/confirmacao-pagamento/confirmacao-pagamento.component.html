@@ -1,0 +1,38 @@
+<div class='container'>
+  <div class='row'>
+    <div class='row'>
+      <div class='col-lg-7 itemLista'>
+        <div class='col-lg-12' style='text-align: center;'>
+          <p style=' text-align: center; font-weight: bold; font-size: 1.5em;'>{{veiculo.nome}}</p>
+          <img src='{{veiculo.foto}}' style='height: 200px;'>
+        </div>
+      </div>
+      <div class='col-lg-4 pagamentoContainer'>
+          <div class='col-sm-12'>
+            <dl class="dl-horizontal" style='text-align: center;'>
+              <div>
+                <span style="margin-right: 15px; font-weight: bold;">De</span>
+                <span>
+                  {{ reserva.reservado_de | date: 'dd/MM/YYYY'}}
+                </span>
+              </div>
+              <div>
+                <span style="margin-right: 15px; font-weight: bold;">Até</span>
+                <span>
+                  {{ reserva.reservado_ate | date: 'dd/MM/YYYY'}}
+                </span>
+              </div>
+              <div>
+                <span style="margin-right: 15px; font-weight: bold;">Valor Total</span>
+                <span>
+                  {{ reserva.valor_alugado }}
+                </span>
+              </div>
+            </dl>
+          </div>
+
+        <input type="submit" value="Confirmar" class='btn waves-effect waves-light' style='margin: auto; display: block; font-size: 1.2em; max-width: 230px;'>
+      </div>
+    </div>
+  </div>
+</div>
