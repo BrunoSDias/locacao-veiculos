@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IDadosPagamento } from '../static/interfaces';
+import { IDadosPagamento, IDadosConfirmacao } from '../static/interfaces';
 import { Reserva } from '../models/reserva';
 import { HttpClient } from '@angular/common/http';
 import { ReservaService } from './reserva.service';
+import { LoadingService } from './loading.service';
 import Sessao from './sessao';
 import { Router } from '@angular/router';
 
@@ -14,10 +15,11 @@ declare const PagSeguroDirectPayment;
 })
 export class AlugarService {
   private dadosPagamento$ = new BehaviorSubject({} as IDadosPagamento);
+  private dadosConfirmacao$ = new BehaviorSubject({} as IDadosConfirmacao)
   private dados: IDadosPagamento;
   senderHash: string;
 
-  constructor(private http: HttpClient, private router: Router, private reservaService: ReservaService) {
+  constructor(private http: HttpClient, private router: Router, private reservaService: ReservaService, private ngZone: NgZone, private loadingService: LoadingService) {
     this.receberDadosCheckout()
     .subscribe(
       d => {
@@ -30,6 +32,10 @@ export class AlugarService {
     )
   }
 
+  toogleLoading(status: boolean) {
+    this.ngZone.run(() => this.loadingService.toggleLoading(status))
+  }
+
   preencheDadosCheckout(dadosPagamento: IDadosPagamento) {
     this.dadosPagamento$.next(dadosPagamento)
   }
@@ -38,17 +44,28 @@ export class AlugarService {
     return this.dadosPagamento$.asObservable();
   }
 
+  atualizaDadosConfirmacao(dadosConfirmacao: IDadosConfirmacao) {
+    this.dadosConfirmacao$.next(dadosConfirmacao)
+  }
+
+  receberDadosConfirmacao() {
+    return this.dadosConfirmacao$.asObservable();
+  }
+
   finalizarPagamento() {
     this.metodosPagamento()
   }
 
   metodosPagamento() {
+    this.toogleLoading(true);
     PagSeguroDirectPayment.getPaymentMethods({
       amount: this.dados.total,
       success: (response) => {
         this.hashPagamento()
       },
       error: (response) => {
+        this.toogleLoading(false);
+        alert("Ocorreu um erro ao tentar obter os métodos de pagamento, por favor tente novamente");
         console.log("ERRO: ", response)
 
       },
@@ -78,6 +95,8 @@ export class AlugarService {
         this.parcelamento();
       },
       error: (response) => {
+        this.toogleLoading(false);
+        alert("Ocorreu um erro ao checar a bandeira do cartão, por favor tente novamente");
         console.log("ERRO: ", response)
         //tratamento do erro
       },
@@ -96,7 +115,9 @@ export class AlugarService {
         this.tokenCartao();
       },
         error: (response) => {
+        this.toogleLoading(false);
           console.log("ERRO: ", response)
+          alert("Ocorreu um erro ao tentar gerar o parcelamento, por favor tente novamente");
             // callback para chamadas que falharam.
       },
         complete: (response) => {
@@ -113,13 +134,32 @@ export class AlugarService {
       expirationMonth: this.dados.mes_expiracao, // Mês da sexpiração do cartão
       expirationYear: this.dados.ano_expiracao, // Ano da expiração do cartão, é necessário os 4 dígitos.
       success: (response) => {
-        Reserva.alugar(this.http, this.dados.veiculoId, this.dados.dias, response.card.token, this.senderHash).then(res => {
-          // this.reservaService.addReserva(res as Reserva);
-          Sessao.setReserva(res as Reserva);
-          this.router.navigateByUrl("/confirmacao_pagamento")
-        })
+        const usuario = Sessao.getUsuario();
+        if (usuario) {
+          Reserva.alugar(this.http, this.dados.veiculoId, this.dados.dias, response.card.token, this.senderHash).then(res => {
+            this.atualizaDadosConfirmacao({
+              reserva_id: res.id,
+              token_pagamento: response.card.token,
+              hash_comprador: this.senderHash,
+            })
+            this.toogleLoading(false);
+            this.reservaService.addReserva(res as Reserva);
+            this.ngZone.run(() => this.router.navigateByUrl("/confirmacao_pagamento"))
+          })
+        }
+        else {
+          this.atualizaDadosConfirmacao({
+            reserva_id: null,
+            token_pagamento: response.card.token,
+            hash_comprador: this.senderHash,
+          })
+          this.toogleLoading(false);
+          this.ngZone.run(() => this.router.navigateByUrl("/login"))
+        }
       },
       error: (response) => {
+        this.toogleLoading(false);
+        alert("Ocorreu um erro, por favor tente novamente");
         console.log("ERRO: ", response)
                // Callback para chamadas que falharam.
       },

@@ -11,6 +11,7 @@ import { VeiculoComponent } from './veiculo/veiculo.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ConfirmacaoPagamentoComponent } from './confirmacao-pagamento/confirmacao-pagamento.component';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ConfirmacaoPagamentoComponent } from './confirmacao-pagamento/confirmac
     VeiculoComponent,
     CadastroComponent,
     CheckoutComponent,
-    ConfirmacaoPagamentoComponent
+    ConfirmacaoPagamentoComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

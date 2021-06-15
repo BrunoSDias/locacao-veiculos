@@ -11,3 +11,9 @@ export interface IDadosPagamento {
   mes_expiracao: string;
   ano_expiracao: string;
 }
+
+export interface IDadosConfirmacao {
+  reserva_id: number;
+  token_pagamento: string;
+  hash_comprador: string;
+}
